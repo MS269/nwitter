@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { authService, fb } from "fb";
 
-const Auth = () => {
+const Auth = ({ refreshUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newAccount, setNewAccount] = useState(true);
@@ -11,16 +11,18 @@ const Auth = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
-      let data;
       if (newAccount) {
-        data = await authService.createUserWithEmailAndPassword(
+        const { user } = await authService.createUserWithEmailAndPassword(
           email,
           password
         );
+        if (user.displayName === null) {
+          const displayName = email.substring(0, email.indexOf("@"));
+          await user.updateProfile({ displayName });
+        }
       } else {
-        data = await authService.signInWithEmailAndPassword(email, password);
+        await authService.signInWithEmailAndPassword(email, password);
       }
-      console.log(data);
     } catch (error) {
       setError(error.message);
     }
@@ -46,8 +48,7 @@ const Auth = () => {
     } else if (name === "github") {
       provider = new fb.auth.GithubAuthProvider();
     }
-    const data = await authService.signInWithPopup(provider);
-    console.log(data);
+    await authService.signInWithPopup(provider);
   };
 
   return (
