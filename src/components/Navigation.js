@@ -9,7 +9,7 @@ const Navigation = ({ userObj }) => (
       </li>
       <li>
         <Link to="/profile">
-          {userObj?.displayName
+          {userObj?.displayName?.length
             ? `${userObj.displayName}'s Profile`
             : "My Profile"}
         </Link>

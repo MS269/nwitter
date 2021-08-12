@@ -30,7 +30,7 @@ const AppRouter = ({ isLoggedIn, userObj, refreshUser }) => {
         ) : (
           <>
             <Route exact path="/">
-              <Auth refreshUser={refreshUser} />
+              <Auth />
             </Route>
             <Redirect from="*" to="/" />
           </>

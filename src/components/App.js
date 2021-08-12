@@ -12,6 +12,8 @@ const App = () => {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setUserObj(user);
+      } else {
+        setUserObj(null);
       }
       setInit(true);
     });
